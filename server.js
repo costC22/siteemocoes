@@ -1,10 +1,18 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const cors = require('cors');
 
 const app = express();
+app.use(cors()); // Adiciona o middleware do CORS
+
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+    cors: {
+        origin: "*", // Permite todas as origens, para simplificar.
+        methods: ["GET", "POST"]
+    }
+});
 
 // Serve os arquivos estáticos da pasta atual
 app.use(express.static(__dirname));
