@@ -3,71 +3,84 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const form = document.getElementById('emotion-form');
     const thankYouMessage = document.getElementById('thank-you-message');
-    const analiseSection = document.getElementById('analise');
 
-    // --- Configuração dos Gráficos ---
+    // --- Configuração dos Gráficos de Rosca ---
     const chartLabels = ['0%', '25%', '50%', '75%', '100%'];
     const chartInstances = {};
 
-    function createChart(chartId, label, color) {
+    const chartColors = [
+        'rgba(255, 99, 132, 0.7)',
+        'rgba(54, 162, 235, 0.7)',
+        'rgba(255, 206, 86, 0.7)',
+        'rgba(75, 192, 192, 0.7)',
+        'rgba(153, 102, 255, 0.7)',
+    ];
+
+    function createChart(chartId, label) {
         const ctx = document.getElementById(chartId).getContext('2d');
         chartInstances[chartId] = new Chart(ctx, {
-            type: 'bar',
+            type: 'doughnut',
             data: {
                 labels: chartLabels,
                 datasets: [{
                     label: label,
                     data: [0, 0, 0, 0, 0],
-                    backgroundColor: `rgba(${color}, 0.6)`,
-                    borderColor: `rgba(${color}, 1)`,
-                    borderWidth: 1
+                    backgroundColor: chartColors,
+                    borderColor: '#fff',
+                    borderWidth: 2
                 }]
             },
             options: {
-                indexAxis: 'y',
-                scales: { x: { beginAtZero: true, ticks: { precision: 0 } } },
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } }
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + ' votos';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
             }
         });
     }
 
-    createChart('ansiedadeChart', 'Ansiedade', '208, 2, 27');
-    createChart('tranquilaChart', 'Tranquilidade', '126, 211, 33');
-    createChart('acolhidaChart', 'Acolhimento', '74, 144, 226');
-    createChart('excluidaChart', 'Exclusão', '245, 166, 35');
-    createChart('irritadaChart', 'Irritação', '208, 2, 27');
+    createChart('ansiedadeChart', 'Ansiedade');
+    createChart('tranquilaChart', 'Tranquilidade');
+    createChart('acolhidaChart', 'Acolhimento');
+    createChart('excluidaChart', 'Exclusão');
+    createChart('irritadaChart', 'Irritação');
 
     // --- Lógica do Formulário ---
     form.addEventListener('submit', function(event) {
         event.preventDefault();
-
-        const formData = new FormData(form);
-        let voteData = null;
-
-        // Encontrar qual emoção foi votada
-        for (let [emotion, value] of formData.entries()) {
-            if (value) {
-                const valueIndex = chartLabels.indexOf(value + '%');
-                voteData = { emotion, valueIndex };
-                break;
-            }
-        }
         
-        // Simplifiquei: pegando apenas o primeiro voto se o usuário clicar em vários
         const selectedRadio = form.querySelector('input[type="radio"]:checked');
         if (selectedRadio) {
             const emotion = selectedRadio.name;
             const value = selectedRadio.value;
-            const valueIndex = chartLabels.indexOf(value);
+            // O valor já é a porcentagem (0, 25, 50...). Precisamos do índice.
+            const valueIndex = chartLabels.findIndex(label => label.startsWith(value));
 
-            // Enviar voto para o servidor
-            socket.emit('vote', { emotion: emotion, valueIndex: valueIndex });
-            
-            // Mostrar mensagem de agradecimento
-            form.style.display = 'none';
-            thankYouMessage.style.display = 'block';
+            if (valueIndex !== -1) {
+                // Enviar voto para o servidor
+                socket.emit('vote', { emotion: emotion, valueIndex: valueIndex });
+                
+                // Mostrar mensagem de agradecimento
+                form.style.display = 'none';
+                thankYouMessage.style.display = 'block';
+            }
         } else {
             alert('Por favor, selecione uma opção.');
         }
@@ -90,20 +103,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
         chartInstances.irritadaChart.data.datasets[0].data = votes.irritada;
         chartInstances.irritadaChart.update();
-    });
-
-    // Animação adicional nos botões de rádio
-    const radioLabels = document.querySelectorAll('.emotion-options label');
-
-    radioLabels.forEach(label => {
-        label.addEventListener('click', () => {
-            // Remove a classe 'selected' de todos os labels no mesmo grupo
-            const radioName = document.getElementById(label.getAttribute('for')).name;
-            const groupLabels = document.querySelectorAll(`input[name="${radioName}"] + label`);
-            groupLabels.forEach(lbl => lbl.classList.remove('selected'));
-
-            // Adiciona a classe 'selected' ao label clicado
-            label.classList.add('selected');
-        });
     });
 });
