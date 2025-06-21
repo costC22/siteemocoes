@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('emotion-form');
     const thankYouMessage = document.getElementById('thank-you-message');
 
+    // Elementos de alternância de visualização
+    const showChartsBtn = document.getElementById('show-charts-btn');
+    const showDataBtn = document.getElementById('show-data-btn');
+    const chartsView = document.getElementById('charts-view');
+    const dataView = document.getElementById('data-view');
+
     // --- Configuração dos Gráficos de Rosca ---
     const chartLabels = ['0%', '25%', '50%', '75%', '100%'];
     const chartInstances = {};
@@ -15,6 +21,21 @@ document.addEventListener('DOMContentLoaded', function() {
         'rgba(75, 192, 192, 0.7)',
         'rgba(153, 102, 255, 0.7)',
     ];
+
+    // Mapeia o ID da pergunta para um rótulo legível
+    const questionLabels = {
+        ansiedade: 'Ansiedade',
+        tranquila: 'Tranquilidade',
+        acolhida: 'Acolhimento',
+        excluida: 'Exclusão',
+        irritada: 'Irritação',
+        desistir: 'Vontade de Desistir',
+        ignorado: 'Ignorado(a)',
+        conversar: 'Vontade de Conversar',
+        importante: 'Importante',
+        nao_entendido: 'Não Entendido(a)',
+        negativos: 'Pensamentos Negativos'
+    };
 
     function createChart(chartId, label) {
         const ctx = document.getElementById(chartId).getContext('2d');
@@ -56,17 +77,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    createChart('ansiedadeChart', 'Ansiedade');
-    createChart('tranquilaChart', 'Tranquilidade');
-    createChart('acolhidaChart', 'Acolhimento');
-    createChart('excluidaChart', 'Exclusão');
-    createChart('irritadaChart', 'Irritação');
-    createChart('desistirChart', 'Vontade de Desistir');
-    createChart('ignoradoChart', 'Ignorado(a)');
-    createChart('conversarChart', 'Vontade de Conversar');
-    createChart('importanteChart', 'Importante');
-    createChart('nao_entendidoChart', 'Não Entendido(a)');
-    createChart('negativosChart', 'Pensamentos Negativos');
+    // Inicializa todos os gráficos
+    Object.keys(questionLabels).forEach(key => {
+        createChart(`${key}Chart`, questionLabels[key]);
+    });
+
+    // Lógica para alternar a visualização
+    showChartsBtn.addEventListener('click', () => {
+        chartsView.style.display = 'grid';
+        dataView.style.display = 'none';
+        showChartsBtn.classList.add('active');
+        showDataBtn.classList.remove('active');
+    });
+
+    showDataBtn.addEventListener('click', () => {
+        chartsView.style.display = 'none';
+        dataView.style.display = 'block';
+        showDataBtn.classList.add('active');
+        showChartsBtn.classList.remove('active');
+    });
 
     // --- Lógica do Formulário ---
     form.addEventListener('submit', function(event) {
@@ -92,40 +121,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Função para atualizar a tabela de dados
+    function updateDataView(votes) {
+        let tableHTML = '<table class="data-table"><thead><tr><th>Pergunta</th>';
+        chartLabels.forEach(label => {
+            tableHTML += `<th>${label}</th>`;
+        });
+        tableHTML += '</tr></thead><tbody>';
+
+        for (const emotion in votes) {
+            if (questionLabels[emotion]) {
+                tableHTML += `<tr><td>${questionLabels[emotion]}</td>`;
+                votes[emotion].forEach(count => {
+                    tableHTML += `<td>${count}</td>`;
+                });
+                tableHTML += '</tr>';
+            }
+        }
+
+        tableHTML += '</tbody></table>';
+        dataView.innerHTML = tableHTML;
+    }
+
     // --- Lógica do Socket.IO ---
     socket.on('updateData', (votes) => {
-        // votes = { ansiedade: [0,1,2,0,0], tranquila: [...], ...}
-        chartInstances.ansiedadeChart.data.datasets[0].data = votes.ansiedade;
-        chartInstances.ansiedadeChart.update();
+        console.log('Dados recebidos:', votes);
 
-        chartInstances.tranquilaChart.data.datasets[0].data = votes.tranquila;
-        chartInstances.tranquilaChart.update();
+        // Atualiza os gráficos
+        for (const chartId in chartInstances) {
+            const emotionKey = chartId.replace('Chart', '');
+            if (votes[emotionKey]) {
+                chartInstances[chartId].data.datasets[0].data = votes[emotionKey];
+                chartInstances[chartId].update();
+            }
+        }
 
-        chartInstances.acolhidaChart.data.datasets[0].data = votes.acolhida;
-        chartInstances.acolhidaChart.update();
-        
-        chartInstances.excluidaChart.data.datasets[0].data = votes.excluida;
-        chartInstances.excluidaChart.update();
-
-        chartInstances.irritadaChart.data.datasets[0].data = votes.irritada;
-        chartInstances.irritadaChart.update();
-
-        chartInstances.desistirChart.data.datasets[0].data = votes.desistir;
-        chartInstances.desistirChart.update();
-
-        chartInstances.ignoradoChart.data.datasets[0].data = votes.ignorado;
-        chartInstances.ignoradoChart.update();
-
-        chartInstances.conversarChart.data.datasets[0].data = votes.conversar;
-        chartInstances.conversarChart.update();
-
-        chartInstances.importanteChart.data.datasets[0].data = votes.importante;
-        chartInstances.importanteChart.update();
-
-        chartInstances.nao_entendidoChart.data.datasets[0].data = votes.nao_entendido;
-        chartInstances.nao_entendidoChart.update();
-
-        chartInstances.negativosChart.data.datasets[0].data = votes.negativos;
-        chartInstances.negativosChart.update();
+        // Atualiza a visualização de dados em tabela
+        updateDataView(votes);
     });
 });

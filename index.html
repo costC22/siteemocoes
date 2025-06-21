@@ -471,7 +471,15 @@
         <div class="container">
           <h2>Resultados em Tempo Real</h2>
           <p>Veja aqui um resumo anônimo das emoções da turma.</p>
-          <div class="charts-container">
+
+          <div class="view-toggle">
+            <button id="show-charts-btn" class="btn active">
+              Ver Gráficos
+            </button>
+            <button id="show-data-btn" class="btn">Ver Dados</button>
+          </div>
+
+          <div id="charts-view" class="charts-container">
             <div class="chart-box">
               <h3>Ansiedade</h3>
               <canvas id="ansiedadeChart"></canvas>
@@ -516,6 +524,10 @@
               <h3>Pensamentos Negativos</h3>
               <canvas id="negativosChart"></canvas>
             </div>
+          </div>
+
+          <div id="data-view" style="display: none">
+            <!-- A tabela de dados será gerada aqui -->
           </div>
         </div>
       </section>
