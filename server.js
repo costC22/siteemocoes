@@ -40,7 +40,24 @@ io.on('connection', (socket) => {
     // Envia os dados atuais para o usuário que acabou de se conectar
     socket.emit('updateData', votes);
 
-    // Escuta por novos votos
+    // Escuta por novos votos do formulário completo
+    socket.on('submitEmotion', (data) => {
+        console.log('Dados recebidos:', data);
+        
+        // Processa cada emoção enviada
+        for (const emotion in data) {
+            if (votes[emotion] && data[emotion] >= 0 && data[emotion] < 5) {
+                votes[emotion][data[emotion]]++;
+                console.log(`Voto registrado: ${emotion} -> categoria ${data[emotion]}`);
+            }
+        }
+        
+        // Transmite os dados atualizados para todos os clientes
+        io.emit('updateData', votes);
+        console.log('Dados atualizados enviados para todos os clientes');
+    });
+
+    // Mantém compatibilidade com o evento antigo 'vote' se necessário
     socket.on('vote', (data) => {
         // data = { emotion: 'ansiedade', valueIndex: 2 }
         if (votes[data.emotion] && data.valueIndex >= 0 && data.valueIndex < 5) {
