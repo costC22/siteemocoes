@@ -1,0 +1,228 @@
+:root {
+    --bg-color: #FDF6E3;
+    --primary-color: #4A90E2; /* Blue */
+    --secondary-color: #7ED321; /* Green */
+    --accent-color: #F5A623; /* Yellow */
+    --warning-color: #D0021B; /* Red */
+    --text-color: #4A4A4A;
+    --light-bg-color: #FFF;
+    --border-color: #EAEAEA;
+    --font-family: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background: var(--light-bg-color);
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+header nav a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+header nav a:hover {
+    color: var(--primary-color);
+}
+
+main section {
+    padding: 60px 0;
+    text-align: center;
+}
+
+.hero {
+    background-color: #EBF4FF; /* Light blue */
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.btn {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--light-bg-color);
+    padding: 12px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #357ABD;
+}
+
+#analise {
+    background-color: var(--light-bg-color);
+}
+
+#analise h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+#emotion-form {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.emotion-question > label {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.emotion-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.emotion-label {
+    font-weight: 600;
+}
+
+.emotion-options {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.emotion-options input[type="radio"] {
+    display: none;
+}
+
+.emotion-options label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 30px;
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.emotion-options label:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+/* Animation comes here */
+.emotion-options input[type="radio"]:checked + label {
+    background-color: var(--primary-color);
+    color: var(--light-bg-color);
+    border-color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+#confirmation-message {
+    background-color: #EBF4FF;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-top: 2rem;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#analise button.btn {
+    display: block;
+    margin: 2rem auto 0;
+}
+
+#dados {
+    background-color: #EBF4FF; /* Light blue */
+}
+
+#dados h2 {
+     font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+#dados .illustration {
+    font-size: 4rem;
+    margin-top: 2rem;
+}
+
+
+footer {
+    background: var(--text-color);
+    color: var(--light-bg-color);
+    text-align: center;
+    padding: 1.5rem 0;
+}
