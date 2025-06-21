@@ -237,8 +237,11 @@ main section {
     border-radius: 10px;
     border: 1px solid var(--border-color);
     box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    min-height: 250px;
+    min-height: 280px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .chart-box h3 {
