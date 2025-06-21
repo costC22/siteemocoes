@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DUCPSI - Apoio Psicológico Escolar</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -228,9 +230,12 @@
             </div>
             <button type="submit" class="btn">Enviar minhas respostas</button>
           </form>
-          <div id="confirmation-message" style="display: none">
+          <div id="thank-you-message" style="display: none">
             <h3>Obrigado por compartilhar!</h3>
-            <p>Sua resposta foi registrada com sucesso e de forma anônima.</p>
+            <p>
+              Suas respostas nos ajudam a construir um ambiente escolar melhor
+              para todos.
+            </p>
           </div>
         </div>
       </section>
@@ -243,6 +248,35 @@
             realizamos uma palestra sobre o tema.
           </p>
           <div class="illustration">📊📈</div>
+        </div>
+      </section>
+
+      <section id="resultados">
+        <div class="container">
+          <h2>Resultados em Tempo Real</h2>
+          <p>Veja aqui um resumo anônimo das emoções da turma.</p>
+          <div class="charts-container">
+            <div class="chart-box">
+              <h3>Ansiedade</h3>
+              <canvas id="ansiedadeChart"></canvas>
+            </div>
+            <div class="chart-box">
+              <h3>Tranquilidade</h3>
+              <canvas id="tranquilaChart"></canvas>
+            </div>
+            <div class="chart-box">
+              <h3>Acolhimento</h3>
+              <canvas id="acolhidaChart"></canvas>
+            </div>
+            <div class="chart-box">
+              <h3>Exclusão</h3>
+              <canvas id="excluidaChart"></canvas>
+            </div>
+            <div class="chart-box">
+              <h3>Irritação</h3>
+              <canvas id="irritadaChart"></canvas>
+            </div>
+          </div>
         </div>
       </section>
     </main>
