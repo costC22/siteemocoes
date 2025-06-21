@@ -3,539 +3,394 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DUCPSI - Apoio Psicológico Escolar</title>
+    <title>Monitor de Emoções - Turma</title>
     <link rel="stylesheet" href="style.css" />
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <header>
+    <!-- Header Fixo -->
+    <header class="header">
       <div class="container">
-        <div class="logo">🧠 DUCPSI</div>
-        <nav>
-          <ul>
-            <li><a href="#inicio">Início</a></li>
-            <li><a href="#analise">Análise Semanal</a></li>
-            <li><a href="#dados">Dados e Palestras</a></li>
-          </ul>
-        </nav>
+        <div class="header-content">
+          <div class="logo">
+            <h1>Monitor de Emoções</h1>
+            <span class="subtitle">Análise em Tempo Real</span>
+          </div>
+          <nav class="nav">
+            <a href="#formulario" class="nav-link">Participar</a>
+            <a href="#resultados" class="nav-link">Resultados</a>
+          </nav>
+        </div>
       </div>
     </header>
 
     <main>
-      <section id="inicio" class="hero">
+      <!-- Hero Section -->
+      <section class="hero">
         <div class="container">
-          <h1>Escuta emocional anônima para estudantes</h1>
-          <p>Como você está se sentindo hoje? Vamos entender juntos.</p>
-          <a href="#analise" class="btn">Iniciar Análise Emocional</a>
-        </div>
-      </section>
-
-      <section id="analise">
-        <div class="container">
-          <h2>Análise Semanal de Emoções</h2>
-          <p>
-            Sua resposta é 100% anônima e será usada para melhorar o ambiente da
-            escola.
-          </p>
-          <form id="emotion-form">
-            <div class="emotion-question">
-              <label>Como você se sentiu essa semana?</label>
-
-              <div class="emotion-row">
-                <span class="emotion-label">Senti-me ansioso/a</span>
-                <div class="emotion-options">
-                  <input
-                    type="radio"
-                    id="ansiosa-0"
-                    name="ansiosa"
-                    value="0"
-                  /><label for="ansiosa-0">0%</label>
-                  <input
-                    type="radio"
-                    id="ansiosa-25"
-                    name="ansiosa"
-                    value="25"
-                  /><label for="ansiosa-25">25%</label>
-                  <input
-                    type="radio"
-                    id="ansiosa-50"
-                    name="ansiosa"
-                    value="50"
-                  /><label for="ansiosa-50">50%</label>
-                  <input
-                    type="radio"
-                    id="ansiosa-75"
-                    name="ansiosa"
-                    value="75"
-                  /><label for="ansiosa-75">75%</label>
-                  <input
-                    type="radio"
-                    id="ansiosa-100"
-                    name="ansiosa"
-                    value="100"
-                  /><label for="ansiosa-100">100%</label>
+          <div class="hero-content">
+            <div class="hero-text">
+              <h2>Como você está se sentindo hoje?</h2>
+              <p>
+                Participe da nossa pesquisa anônima e ajude-nos a entender
+                melhor o clima emocional da turma. Suas respostas são
+                confidenciais e contribuem para criar um ambiente mais
+                acolhedor.
+              </p>
+              <a href="#formulario" class="cta-button">Participar Agora</a>
+            </div>
+            <div class="hero-visual">
+              <div class="stats-preview">
+                <div class="stat-card">
+                  <span class="stat-number">0</span>
+                  <span class="stat-label">Participantes</span>
                 </div>
-              </div>
-
-              <div class="emotion-row">
-                <span class="emotion-label">Senti-me tranquilo/a</span>
-                <div class="emotion-options">
-                  <input
-                    type="radio"
-                    id="tranquila-0"
-                    name="tranquila"
-                    value="0"
-                  /><label for="tranquila-0">0%</label>
-                  <input
-                    type="radio"
-                    id="tranquila-25"
-                    name="tranquila"
-                    value="25"
-                  /><label for="tranquila-25">25%</label>
-                  <input
-                    type="radio"
-                    id="tranquila-50"
-                    name="tranquila"
-                    value="50"
-                  /><label for="tranquila-50">50%</label>
-                  <input
-                    type="radio"
-                    id="tranquila-75"
-                    name="tranquila"
-                    value="75"
-                  /><label for="tranquila-75">75%</label>
-                  <input
-                    type="radio"
-                    id="tranquila-100"
-                    name="tranquila"
-                    value="100"
-                  /><label for="tranquila-100">100%</label>
+                <div class="stat-card">
+                  <span class="stat-number">11</span>
+                  <span class="stat-label">Indicadores</span>
                 </div>
-              </div>
-
-              <div class="emotion-row">
-                <span class="emotion-label">Senti-me acolhido/a</span>
-                <div class="emotion-options">
-                  <input
-                    type="radio"
-                    id="acolhida-0"
-                    name="acolhida"
-                    value="0"
-                  /><label for="acolhida-0">0%</label>
-                  <input
-                    type="radio"
-                    id="acolhida-25"
-                    name="acolhida"
-                    value="25"
-                  /><label for="acolhida-25">25%</label>
-                  <input
-                    type="radio"
-                    id="acolhida-50"
-                    name="acolhida"
-                    value="50"
-                  /><label for="acolhida-50">50%</label>
-                  <input
-                    type="radio"
-                    id="acolhida-75"
-                    name="acolhida"
-                    value="75"
-                  /><label for="acolhida-75">75%</label>
-                  <input
-                    type="radio"
-                    id="acolhida-100"
-                    name="acolhida"
-                    value="100"
-                  /><label for="acolhida-100">100%</label>
-                </div>
-              </div>
-
-              <div class="emotion-row">
-                <span class="emotion-label">Senti-me excluído/a</span>
-                <div class="emotion-options">
-                  <input
-                    type="radio"
-                    id="excluida-0"
-                    name="excluida"
-                    value="0"
-                  /><label for="excluida-0">0%</label>
-                  <input
-                    type="radio"
-                    id="excluida-25"
-                    name="excluida"
-                    value="25"
-                  /><label for="excluida-25">25%</label>
-                  <input
-                    type="radio"
-                    id="excluida-50"
-                    name="excluida"
-                    value="50"
-                  /><label for="excluida-50">50%</label>
-                  <input
-                    type="radio"
-                    id="excluida-75"
-                    name="excluida"
-                    value="75"
-                  /><label for="excluida-75">75%</label>
-                  <input
-                    type="radio"
-                    id="excluida-100"
-                    name="excluida"
-                    value="100"
-                  /><label for="excluida-100">100%</label>
-                </div>
-              </div>
-
-              <div class="emotion-row">
-                <span class="emotion-label">Senti-me irritado/a</span>
-                <div class="emotion-options">
-                  <input
-                    type="radio"
-                    id="irritada-0"
-                    name="irritada"
-                    value="0"
-                  /><label for="irritada-0">0%</label>
-                  <input
-                    type="radio"
-                    id="irritada-25"
-                    name="irritada"
-                    value="25"
-                  /><label for="irritada-25">25%</label>
-                  <input
-                    type="radio"
-                    id="irritada-50"
-                    name="irritada"
-                    value="50"
-                  /><label for="irritada-50">50%</label>
-                  <input
-                    type="radio"
-                    id="irritada-75"
-                    name="irritada"
-                    value="75"
-                  /><label for="irritada-75">75%</label>
-                  <input
-                    type="radio"
-                    id="irritada-100"
-                    name="irritada"
-                    value="100"
-                  /><label for="irritada-100">100%</label>
-                </div>
-              </div>
-
-              <div class="emotion-row">
-                <span class="emotion-label">Tive vontade de desistir</span>
-                <div class="emotion-options">
-                  <input
-                    type="radio"
-                    id="desistir-0"
-                    name="desistir"
-                    value="0"
-                  /><label for="desistir-0">0%</label>
-                  <input
-                    type="radio"
-                    id="desistir-25"
-                    name="desistir"
-                    value="25"
-                  /><label for="desistir-25">25%</label>
-                  <input
-                    type="radio"
-                    id="desistir-50"
-                    name="desistir"
-                    value="50"
-                  /><label for="desistir-50">50%</label>
-                  <input
-                    type="radio"
-                    id="desistir-75"
-                    name="desistir"
-                    value="75"
-                  /><label for="desistir-75">75%</label>
-                  <input
-                    type="radio"
-                    id="desistir-100"
-                    name="desistir"
-                    value="100"
-                  /><label for="desistir-100">100%</label>
-                </div>
-              </div>
-
-              <div class="emotion-row">
-                <span class="emotion-label">Me senti ignorado(a)</span>
-                <div class="emotion-options">
-                  <input
-                    type="radio"
-                    id="ignorado-0"
-                    name="ignorado"
-                    value="0"
-                  /><label for="ignorado-0">0%</label>
-                  <input
-                    type="radio"
-                    id="ignorado-25"
-                    name="ignorado"
-                    value="25"
-                  /><label for="ignorado-25">25%</label>
-                  <input
-                    type="radio"
-                    id="ignorado-50"
-                    name="ignorado"
-                    value="50"
-                  /><label for="ignorado-50">50%</label>
-                  <input
-                    type="radio"
-                    id="ignorado-75"
-                    name="ignorado"
-                    value="75"
-                  /><label for="ignorado-75">75%</label>
-                  <input
-                    type="radio"
-                    id="ignorado-100"
-                    name="ignorado"
-                    value="100"
-                  /><label for="ignorado-100">100%</label>
-                </div>
-              </div>
-
-              <div class="emotion-row">
-                <span class="emotion-label">Tive vontade de conversar</span>
-                <div class="emotion-options">
-                  <input
-                    type="radio"
-                    id="conversar-0"
-                    name="conversar"
-                    value="0"
-                  /><label for="conversar-0">0%</label>
-                  <input
-                    type="radio"
-                    id="conversar-25"
-                    name="conversar"
-                    value="25"
-                  /><label for="conversar-25">25%</label>
-                  <input
-                    type="radio"
-                    id="conversar-50"
-                    name="conversar"
-                    value="50"
-                  /><label for="conversar-50">50%</label>
-                  <input
-                    type="radio"
-                    id="conversar-75"
-                    name="conversar"
-                    value="75"
-                  /><label for="conversar-75">75%</label>
-                  <input
-                    type="radio"
-                    id="conversar-100"
-                    name="conversar"
-                    value="100"
-                  /><label for="conversar-100">100%</label>
-                </div>
-              </div>
-
-              <div class="emotion-row">
-                <span class="emotion-label">Me senti importante</span>
-                <div class="emotion-options">
-                  <input
-                    type="radio"
-                    id="importante-0"
-                    name="importante"
-                    value="0"
-                  /><label for="importante-0">0%</label>
-                  <input
-                    type="radio"
-                    id="importante-25"
-                    name="importante"
-                    value="25"
-                  /><label for="importante-25">25%</label>
-                  <input
-                    type="radio"
-                    id="importante-50"
-                    name="importante"
-                    value="50"
-                  /><label for="importante-50">50%</label>
-                  <input
-                    type="radio"
-                    id="importante-75"
-                    name="importante"
-                    value="75"
-                  /><label for="importante-75">75%</label>
-                  <input
-                    type="radio"
-                    id="importante-100"
-                    name="importante"
-                    value="100"
-                  /><label for="importante-100">100%</label>
-                </div>
-              </div>
-
-              <div class="emotion-row">
-                <span class="emotion-label">Ninguém me entendia</span>
-                <div class="emotion-options">
-                  <input
-                    type="radio"
-                    id="nao_entendido-0"
-                    name="nao_entendido"
-                    value="0"
-                  /><label for="nao_entendido-0">0%</label>
-                  <input
-                    type="radio"
-                    id="nao_entendido-25"
-                    name="nao_entendido"
-                    value="25"
-                  /><label for="nao_entendido-25">25%</label>
-                  <input
-                    type="radio"
-                    id="nao_entendido-50"
-                    name="nao_entendido"
-                    value="50"
-                  /><label for="nao_entendido-50">50%</label>
-                  <input
-                    type="radio"
-                    id="nao_entendido-75"
-                    name="nao_entendido"
-                    value="75"
-                  /><label for="nao_entendido-75">75%</label>
-                  <input
-                    type="radio"
-                    id="nao_entendido-100"
-                    name="nao_entendido"
-                    value="100"
-                  /><label for="nao_entendido-100">100%</label>
-                </div>
-              </div>
-
-              <div class="emotion-row">
-                <span class="emotion-label">Tive pensamentos negativos</span>
-                <div class="emotion-options">
-                  <input
-                    type="radio"
-                    id="negativos-0"
-                    name="negativos"
-                    value="0"
-                  /><label for="negativos-0">0%</label>
-                  <input
-                    type="radio"
-                    id="negativos-25"
-                    name="negativos"
-                    value="25"
-                  /><label for="negativos-25">25%</label>
-                  <input
-                    type="radio"
-                    id="negativos-50"
-                    name="negativos"
-                    value="50"
-                  /><label for="negativos-50">50%</label>
-                  <input
-                    type="radio"
-                    id="negativos-75"
-                    name="negativos"
-                    value="75"
-                  /><label for="negativos-75">75%</label>
-                  <input
-                    type="radio"
-                    id="negativos-100"
-                    name="negativos"
-                    value="100"
-                  /><label for="negativos-100">100%</label>
+                <div class="stat-card">
+                  <span class="stat-number">100%</span>
+                  <span class="stat-label">Anônimo</span>
                 </div>
               </div>
             </div>
-            <button type="submit" class="btn">Enviar minhas respostas</button>
-          </form>
-          <div id="thank-you-message" style="display: none">
-            <h3>Obrigado por compartilhar!</h3>
-            <p>
-              Suas respostas nos ajudam a construir um ambiente escolar melhor
-              para todos.
-            </p>
           </div>
         </div>
       </section>
 
-      <section id="dados">
+      <!-- Formulário Section -->
+      <section id="formulario" class="form-section">
         <div class="container">
-          <h2>Dados e Palestra</h2>
-          <p>
-            Analisamos as respostas das emoções e, no fim de cada mês,
-            realizamos uma palestra sobre o tema.
-          </p>
-          <div class="illustration">📊📈</div>
+          <div class="section-header">
+            <h2>Questionário de Emoções</h2>
+            <p>
+              Para cada pergunta, indique o percentual que melhor representa
+              como você se sente (0% = não se aplica, 100% = totalmente
+              verdadeiro)
+            </p>
+          </div>
+
+          <div class="form-container">
+            <form id="emotion-form" class="emotion-form">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="ansiedade">Ansiedade</label>
+                  <input
+                    type="range"
+                    id="ansiedade"
+                    name="ansiedade"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="slider"
+                  />
+                  <div class="range-labels">
+                    <span>0%</span>
+                    <span id="ansiedade-value">0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="tranquila">Tranquilidade</label>
+                  <input
+                    type="range"
+                    id="tranquila"
+                    name="tranquila"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="slider"
+                  />
+                  <div class="range-labels">
+                    <span>0%</span>
+                    <span id="tranquila-value">0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="acolhida">Acolhimento</label>
+                  <input
+                    type="range"
+                    id="acolhida"
+                    name="acolhida"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="slider"
+                  />
+                  <div class="range-labels">
+                    <span>0%</span>
+                    <span id="acolhida-value">0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="excluida">Exclusão</label>
+                  <input
+                    type="range"
+                    id="excluida"
+                    name="excluida"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="slider"
+                  />
+                  <div class="range-labels">
+                    <span>0%</span>
+                    <span id="excluida-value">0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="irritada">Irritação</label>
+                  <input
+                    type="range"
+                    id="irritada"
+                    name="irritada"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="slider"
+                  />
+                  <div class="range-labels">
+                    <span>0%</span>
+                    <span id="irritada-value">0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="desistir">Vontade de Desistir</label>
+                  <input
+                    type="range"
+                    id="desistir"
+                    name="desistir"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="slider"
+                  />
+                  <div class="range-labels">
+                    <span>0%</span>
+                    <span id="desistir-value">0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="ignorado">Ignorado(a)</label>
+                  <input
+                    type="range"
+                    id="ignorado"
+                    name="ignorado"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="slider"
+                  />
+                  <div class="range-labels">
+                    <span>0%</span>
+                    <span id="ignorado-value">0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="conversar">Vontade de Conversar</label>
+                  <input
+                    type="range"
+                    id="conversar"
+                    name="conversar"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="slider"
+                  />
+                  <div class="range-labels">
+                    <span>0%</span>
+                    <span id="conversar-value">0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="importante">Importante</label>
+                  <input
+                    type="range"
+                    id="importante"
+                    name="importante"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="slider"
+                  />
+                  <div class="range-labels">
+                    <span>0%</span>
+                    <span id="importante-value">0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="nao_entendido">Não Entendido(a)</label>
+                  <input
+                    type="range"
+                    id="nao_entendido"
+                    name="nao_entendido"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="slider"
+                  />
+                  <div class="range-labels">
+                    <span>0%</span>
+                    <span id="nao_entendido-value">0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="negativos">Pensamentos Negativos</label>
+                  <input
+                    type="range"
+                    id="negativos"
+                    name="negativos"
+                    min="0"
+                    max="100"
+                    value="0"
+                    class="slider"
+                  />
+                  <div class="range-labels">
+                    <span>0%</span>
+                    <span id="negativos-value">0%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="submit-btn">
+                  Enviar Respostas
+                </button>
+              </div>
+            </form>
+
+            <div
+              id="thank-you-message"
+              class="thank-you-message"
+              style="display: none"
+            >
+              <div class="success-card">
+                <div class="success-icon">✓</div>
+                <h3>Obrigado pela sua participação!</h3>
+                <p>
+                  Sua resposta foi registrada com sucesso e contribuirá para
+                  nossa análise do clima emocional da turma.
+                </p>
+                <button onclick="location.reload()" class="new-response-btn">
+                  Nova Resposta
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section id="resultados">
+      <!-- Resultados Section -->
+      <section id="resultados" class="results-section">
         <div class="container">
-          <h2>Resultados em Tempo Real</h2>
-          <p>Veja aqui um resumo anônimo das emoções da turma.</p>
+          <div class="section-header">
+            <h2>Resultados em Tempo Real</h2>
+            <p>
+              Visualize os dados anônimos coletados da turma através de gráficos
+              interativos ou tabelas detalhadas
+            </p>
+          </div>
 
           <div class="view-toggle">
-            <button id="show-charts-btn" class="btn active">
+            <button id="show-charts-btn" class="view-btn active">
+              <span class="btn-icon">📊</span>
               Ver Gráficos
             </button>
-            <button id="show-data-btn" class="btn">Ver Dados</button>
+            <button id="show-data-btn" class="view-btn">
+              <span class="btn-icon">📋</span>
+              Ver Dados
+            </button>
           </div>
 
           <div id="charts-view" class="charts-container">
-            <div class="chart-box">
+            <div class="chart-card">
               <h3>Ansiedade</h3>
               <canvas id="ansiedadeChart"></canvas>
             </div>
-            <div class="chart-box">
+            <div class="chart-card">
               <h3>Tranquilidade</h3>
               <canvas id="tranquilaChart"></canvas>
             </div>
-            <div class="chart-box">
+            <div class="chart-card">
               <h3>Acolhimento</h3>
               <canvas id="acolhidaChart"></canvas>
             </div>
-            <div class="chart-box">
+            <div class="chart-card">
               <h3>Exclusão</h3>
               <canvas id="excluidaChart"></canvas>
             </div>
-            <div class="chart-box">
+            <div class="chart-card">
               <h3>Irritação</h3>
               <canvas id="irritadaChart"></canvas>
             </div>
-            <div class="chart-box">
+            <div class="chart-card">
               <h3>Vontade de Desistir</h3>
               <canvas id="desistirChart"></canvas>
             </div>
-            <div class="chart-box">
+            <div class="chart-card">
               <h3>Ignorado(a)</h3>
               <canvas id="ignoradoChart"></canvas>
             </div>
-            <div class="chart-box">
+            <div class="chart-card">
               <h3>Vontade de Conversar</h3>
               <canvas id="conversarChart"></canvas>
             </div>
-            <div class="chart-box">
+            <div class="chart-card">
               <h3>Importante</h3>
               <canvas id="importanteChart"></canvas>
             </div>
-            <div class="chart-box">
+            <div class="chart-card">
               <h3>Não Entendido(a)</h3>
               <canvas id="nao_entendidoChart"></canvas>
             </div>
-            <div class="chart-box">
+            <div class="chart-card">
               <h3>Pensamentos Negativos</h3>
               <canvas id="negativosChart"></canvas>
             </div>
           </div>
 
-          <div id="data-view" style="display: none">
+          <div id="data-view" class="data-container" style="display: none">
             <!-- A tabela de dados será gerada aqui -->
           </div>
         </div>
       </section>
     </main>
 
-    <footer>
+    <!-- Footer -->
+    <footer class="footer">
       <div class="container">
-        <p>&copy; 2024 DUCPSI. Todos os direitos reservados.</p>
+        <p>
+          &copy; 2024 Monitor de Emoções. Desenvolvido para análise do clima
+          emocional da turma.
+        </p>
       </div>
     </footer>
 
