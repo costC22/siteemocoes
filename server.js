@@ -24,6 +24,12 @@ const initialChartData = {
     acolhida: [0, 0, 0, 0, 0],
     excluida: [0, 0, 0, 0, 0],
     irritada: [0, 0, 0, 0, 0],
+    desistir: [0, 0, 0, 0, 0],
+    ignorado: [0, 0, 0, 0, 0],
+    conversar: [0, 0, 0, 0, 0],
+    importante: [0, 0, 0, 0, 0],
+    nao_entendido: [0, 0, 0, 0, 0],
+    negativos: [0, 0, 0, 0, 0],
 };
 
 let votes = JSON.parse(JSON.stringify(initialChartData)); // Deep copy

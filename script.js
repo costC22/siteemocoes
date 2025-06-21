@@ -61,6 +61,12 @@ document.addEventListener('DOMContentLoaded', function() {
     createChart('acolhidaChart', 'Acolhimento');
     createChart('excluidaChart', 'Exclusão');
     createChart('irritadaChart', 'Irritação');
+    createChart('desistirChart', 'Vontade de Desistir');
+    createChart('ignoradoChart', 'Ignorado(a)');
+    createChart('conversarChart', 'Vontade de Conversar');
+    createChart('importanteChart', 'Importante');
+    createChart('nao_entendidoChart', 'Não Entendido(a)');
+    createChart('negativosChart', 'Pensamentos Negativos');
 
     // --- Lógica do Formulário ---
     form.addEventListener('submit', function(event) {
@@ -103,5 +109,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
         chartInstances.irritadaChart.data.datasets[0].data = votes.irritada;
         chartInstances.irritadaChart.update();
+
+        chartInstances.desistirChart.data.datasets[0].data = votes.desistir;
+        chartInstances.desistirChart.update();
+
+        chartInstances.ignoradoChart.data.datasets[0].data = votes.ignorado;
+        chartInstances.ignoradoChart.update();
+
+        chartInstances.conversarChart.data.datasets[0].data = votes.conversar;
+        chartInstances.conversarChart.update();
+
+        chartInstances.importanteChart.data.datasets[0].data = votes.importante;
+        chartInstances.importanteChart.update();
+
+        chartInstances.nao_entendidoChart.data.datasets[0].data = votes.nao_entendido;
+        chartInstances.nao_entendidoChart.update();
+
+        chartInstances.negativosChart.data.datasets[0].data = votes.negativos;
+        chartInstances.negativosChart.update();
     });
 });
