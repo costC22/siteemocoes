@@ -17,6 +17,16 @@ const io = socketIo(server, {
 // Serve os arquivos estáticos da pasta atual
 app.use(express.static(__dirname));
 
+// Rota de health check para o Render
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
+// Rota raiz
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+
 // Estrutura de dados em memória para armazenar os votos
 const initialChartData = {
     ansiedade: [0, 0, 0, 0, 0],
@@ -73,7 +83,27 @@ io.on('connection', (socket) => {
     });
 });
 
+// Tratamento de erros não capturados
+process.on('uncaughtException', (err) => {
+    console.error('Erro não capturado:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Promise rejeitada não tratada:', reason);
+});
+
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Ambiente: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`URL: http://localhost:${PORT}`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+    console.log('SIGTERM recebido, fechando servidor...');
+    server.close(() => {
+        console.log('Servidor fechado');
+        process.exit(0);
+    });
 });
