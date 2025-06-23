@@ -79,8 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         'rgba(239, 68, 68, 1)',
                         'rgba(147, 51, 234, 1)',
                     ],
-                    borderWidth: 2,
-                    hoverOffset: 4
+                    borderWidth: 1,
+                    hoverOffset: 2
                 }]
             },
             options: {
@@ -90,12 +90,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     legend: {
                         position: 'bottom',
                         labels: {
-                            padding: 20,
+                            padding: 10,
                             usePointStyle: true,
                             font: {
-                                size: 12,
+                                size: 10,
                                 family: 'Inter'
-                            }
+                            },
+                            boxWidth: 8,
+                            boxHeight: 8
                         }
                     },
                     tooltip: {
@@ -104,8 +106,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         bodyColor: 'white',
                         borderColor: 'rgba(255, 255, 255, 0.2)',
                         borderWidth: 1,
-                        cornerRadius: 8,
+                        cornerRadius: 6,
                         displayColors: true,
+                        titleFont: {
+                            size: 12
+                        },
+                        bodyFont: {
+                            size: 11
+                        },
                         callbacks: {
                             label: function(context) {
                                 const label = context.label || '';
@@ -116,15 +124,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 },
                 animation: {
-                    animateRotate: false, // Desabilita animação de rotação
-                    animateScale: false,  // Desabilita animação de escala
-                    duration: 300        // Reduz duração das animações
+                    animateRotate: false,
+                    animateScale: false,
+                    duration: 200
                 },
                 transitions: {
                     active: {
                         animation: {
-                            duration: 200
+                            duration: 100
                         }
+                    }
+                },
+                layout: {
+                    padding: {
+                        top: 5,
+                        bottom: 5,
+                        left: 5,
+                        right: 5
                     }
                 }
             }

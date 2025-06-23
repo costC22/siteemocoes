@@ -454,33 +454,46 @@ body {
 /* Container dos gráficos */
 .charts-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
 }
 
 .chart-card {
     background: white;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: var(--shadow-md);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
     border: 1px solid var(--border-color);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     /* Otimizações de performance */
     will-change: transform;
     transform: translateZ(0);
+    /* Altura fixa para gráficos menores */
+    height: 280px;
+    display: flex;
+    flex-direction: column;
 }
 
 .chart-card:hover {
-    transform: translateY(-2px) translateZ(0);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px) translateZ(0);
+    box-shadow: var(--shadow-md);
 }
 
 .chart-card h3 {
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--gray-800);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     text-align: center;
+    flex-shrink: 0;
+}
+
+/* Container do canvas do gráfico */
+.chart-card canvas {
+    flex: 1;
+    max-height: 200px;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 /* Container de dados */
@@ -555,7 +568,18 @@ body {
     }
 
     .charts-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .chart-card {
+        height: 250px;
+        padding: 1rem;
+    }
+
+    .chart-card h3 {
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
     }
 
     .nav {
@@ -582,5 +606,20 @@ body {
 
     .success-card {
         padding: 2rem 1rem;
+    }
+
+    .charts-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .chart-card {
+        height: 220px;
+        padding: 0.75rem;
+    }
+
+    .chart-card h3 {
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
     }
 }
