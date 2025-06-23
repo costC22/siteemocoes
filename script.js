@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const chartInstances = {};
     let updateTimeout = null;
     let scrollTimeout = null;
+    let isUpdating = false;
 
     // Mapeia o ID da pergunta para um rótulo legível
     const questionLabels = {
@@ -80,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         'rgba(147, 51, 234, 1)',
                     ],
                     borderWidth: 1,
-                    hoverOffset: 2
+                    hoverOffset: 1
                 }]
             },
             options: {
@@ -90,14 +91,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     legend: {
                         position: 'bottom',
                         labels: {
-                            padding: 10,
+                            padding: 5,
                             usePointStyle: true,
                             font: {
-                                size: 10,
+                                size: 8,
                                 family: 'Inter'
                             },
-                            boxWidth: 8,
-                            boxHeight: 8
+                            boxWidth: 6,
+                            boxHeight: 6
                         }
                     },
                     tooltip: {
@@ -106,13 +107,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         bodyColor: 'white',
                         borderColor: 'rgba(255, 255, 255, 0.2)',
                         borderWidth: 1,
-                        cornerRadius: 6,
+                        cornerRadius: 4,
                         displayColors: true,
                         titleFont: {
-                            size: 12
+                            size: 10
                         },
                         bodyFont: {
-                            size: 11
+                            size: 9
                         },
                         callbacks: {
                             label: function(context) {
@@ -126,23 +127,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 animation: {
                     animateRotate: false,
                     animateScale: false,
-                    duration: 200
+                    duration: 100
                 },
                 transitions: {
                     active: {
                         animation: {
-                            duration: 100
+                            duration: 50
                         }
                     }
                 },
                 layout: {
                     padding: {
-                        top: 5,
-                        bottom: 5,
-                        left: 5,
-                        right: 5
+                        top: 2,
+                        bottom: 2,
+                        left: 2,
+                        right: 2
                     }
-                }
+                },
+                cutout: '60%'
             }
         };
         
@@ -229,6 +231,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função otimizada para atualizar gráficos
     const updateCharts = debounce((votes) => {
+        if (isUpdating) return;
+        isUpdating = true;
+        
         for (const chartId in chartInstances) {
             const emotionKey = chartId.replace('Chart', '');
             if (votes[emotionKey]) {
@@ -237,7 +242,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 chart.update('none'); // Atualiza sem animação
             }
         }
-    }, 100);
+        
+        setTimeout(() => {
+            isUpdating = false;
+        }, 50);
+    }, 150);
 
     socket.on('updateData', (votes) => {
         console.log('Dados recebidos:', votes);
@@ -282,6 +291,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 16); // ~60fps
 
     window.addEventListener('scroll', updateHeader, { passive: true });
+
+    // Previne scroll automático causado por mudanças de layout
+    let currentScrollPosition = window.pageYOffset;
+    window.addEventListener('scroll', function() {
+        currentScrollPosition = window.pageYOffset;
+    });
 
     // Limpeza de timeouts quando a página é descarregada
     window.addEventListener('beforeunload', () => {
