@@ -4,15 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Monitor de Emoções - Turma</title>
+
+    <!-- Preload de recursos críticos -->
+    <link rel="preload" href="style.css" as="style" />
+    <link rel="preload" href="script.js" as="script" />
+    <link rel="preload" href="/socket.io/socket.io.js" as="script" />
+
+    <!-- CSS crítico -->
     <link rel="stylesheet" href="style.css" />
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Fontes com display=swap para melhor performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Socket.IO carregado de forma assíncrona -->
+    <script src="/socket.io/socket.io.js" defer></script>
+
+    <!-- Chart.js carregado de forma assíncrona -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+    <!-- Script principal carregado de forma assíncrona -->
+    <script src="script.js" defer></script>
   </head>
   <body>
     <!-- Header Fixo -->
@@ -287,19 +303,16 @@
               </div>
             </form>
 
-            <div
-              id="thank-you-message"
-              class="thank-you-message"
-              style="display: none"
-            >
+            <div id="thank-you-message" class="thank-you-message">
               <div class="success-card">
                 <div class="success-icon">✓</div>
                 <h3>Obrigado pela sua participação!</h3>
                 <p>
-                  Sua resposta foi registrada com sucesso e contribuirá para
-                  nossa análise do clima emocional da turma.
+                  Suas respostas foram registradas com sucesso. Os resultados
+                  são atualizados em tempo real e você pode visualizá-los
+                  abaixo.
                 </p>
-                <button onclick="location.reload()" class="new-response-btn">
+                <button class="new-response-btn" onclick="location.reload()">
                   Nova Resposta
                 </button>
               </div>
@@ -314,19 +327,19 @@
           <div class="section-header">
             <h2>Resultados em Tempo Real</h2>
             <p>
-              Visualize os dados anônimos coletados da turma através de gráficos
-              interativos ou tabelas detalhadas
+              Visualize as respostas da turma através de gráficos interativos ou
+              dados tabulares
             </p>
           </div>
 
           <div class="view-toggle">
             <button id="show-charts-btn" class="view-btn active">
               <span class="btn-icon">📊</span>
-              Ver Gráficos
+              Gráficos
             </button>
             <button id="show-data-btn" class="view-btn">
               <span class="btn-icon">📋</span>
-              Ver Dados
+              Dados
             </button>
           </div>
 
@@ -378,22 +391,18 @@
           </div>
 
           <div id="data-view" class="data-container" style="display: none">
-            <!-- A tabela de dados será gerada aqui -->
+            <!-- Tabela de dados será gerada dinamicamente -->
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
       <div class="container">
         <p>
-          &copy; 2024 Monitor de Emoções. Desenvolvido para análise do clima
-          emocional da turma.
+          &copy; 2024 Monitor de Emoções - DUCPSI. Todos os direitos reservados.
         </p>
       </div>
     </footer>
-
-    <script src="script.js"></script>
   </body>
 </html>

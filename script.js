@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const chartLabels = ['0%', '25%', '50%', '75%', '100%'];
     const chartInstances = {};
+    let updateTimeout = null;
+    let scrollTimeout = null;
 
     // Mapeia o ID da pergunta para um rótulo legível
     const questionLabels = {
@@ -28,15 +30,27 @@ document.addEventListener('DOMContentLoaded', function() {
         negativos: 'Pensamentos Negativos'
     };
 
-    // Configuração dos sliders
+    // Função debounce para otimizar performance
+    function debounce(func, wait) {
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(updateTimeout);
+                func(...args);
+            };
+            clearTimeout(updateTimeout);
+            updateTimeout = setTimeout(later, wait);
+        };
+    }
+
+    // Configuração dos sliders com debounce
     const sliders = document.querySelectorAll('.slider');
     sliders.forEach(slider => {
         const valueDisplay = document.getElementById(`${slider.id}-value`);
         
-        // Atualiza o valor exibido quando o slider é movido
-        slider.addEventListener('input', function() {
+        // Atualiza o valor exibido quando o slider é movido (com debounce)
+        slider.addEventListener('input', debounce(function() {
             valueDisplay.textContent = this.value + '%';
-        });
+        }, 50));
         
         // Inicializa o valor
         valueDisplay.textContent = slider.value + '%';
@@ -102,8 +116,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 },
                 animation: {
-                    animateRotate: true,
-                    animateScale: true
+                    animateRotate: false, // Desabilita animação de rotação
+                    animateScale: false,  // Desabilita animação de escala
+                    duration: 300        // Reduz duração das animações
+                },
+                transitions: {
+                    active: {
+                        animation: {
+                            duration: 200
+                        }
+                    }
                 }
             }
         };
@@ -189,17 +211,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    socket.on('updateData', (votes) => {
-        console.log('Dados recebidos:', votes);
-
-        // Atualiza os gráficos
+    // Função otimizada para atualizar gráficos
+    const updateCharts = debounce((votes) => {
         for (const chartId in chartInstances) {
             const emotionKey = chartId.replace('Chart', '');
             if (votes[emotionKey]) {
-                chartInstances[chartId].data.datasets[0].data = votes[emotionKey];
-                chartInstances[chartId].update();
+                const chart = chartInstances[chartId];
+                chart.data.datasets[0].data = votes[emotionKey];
+                chart.update('none'); // Atualiza sem animação
             }
         }
+    }, 100);
+
+    socket.on('updateData', (votes) => {
+        console.log('Dados recebidos:', votes);
+
+        // Atualiza os gráficos com debounce
+        updateCharts(votes);
 
         // Atualiza a visualização de dados em tabela
         updateDataView(votes);
@@ -211,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateParticipantCount(totalVotes);
     });
 
-    // Smooth scroll para links de navegação
+    // Smooth scroll otimizado para links de navegação
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -225,8 +253,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Adiciona efeito de scroll no header
-    window.addEventListener('scroll', function() {
+    // Adiciona efeito de scroll no header com debounce
+    const updateHeader = debounce(function() {
         const header = document.querySelector('.header');
         if (window.scrollY > 100) {
             header.style.background = 'rgba(255, 255, 255, 0.98)';
@@ -235,5 +263,13 @@ document.addEventListener('DOMContentLoaded', function() {
             header.style.background = 'rgba(255, 255, 255, 0.95)';
             header.style.boxShadow = 'none';
         }
+    }, 16); // ~60fps
+
+    window.addEventListener('scroll', updateHeader, { passive: true });
+
+    // Limpeza de timeouts quando a página é descarregada
+    window.addEventListener('beforeunload', () => {
+        if (updateTimeout) clearTimeout(updateTimeout);
+        if (scrollTimeout) clearTimeout(scrollTimeout);
     });
 });
